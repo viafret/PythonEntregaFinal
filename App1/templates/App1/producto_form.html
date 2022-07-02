@@ -1,0 +1,18 @@
+{% extends "App1/padre.html" %}
+
+{% load static %}
+
+{% block cambioTitulo %}
+
+<span class="subheading">Productos - Formulario</span>
+
+{% endblock %}
+
+{% block seCambia %}
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Aceptar" />
+</form>
+{% endblock %}

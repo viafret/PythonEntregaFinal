@@ -1,0 +1,32 @@
+{% extends "App1/padre.html" %}
+
+{% load static %}
+
+{% block cambioTitulo %}
+
+<span class="subheading">Lista de Productos</span>
+
+{% endblock %}
+
+{% block seCambia %}
+
+{% for producto in object_list %}
+
+<li>{{producto}}</li>
+<button>
+    <a href="{% url 'productos_detalle' producto.id %}">Detalle</a>
+</button>
+<button>
+    <a href="{% url 'productos_editar' producto.id %}">Editar</a>
+</button>
+<button>
+    <a href="{% url 'productos_borrar' producto.id %}">Borrar</a>
+</button>
+{% endfor %}
+
+<br>
+
+<button>
+    <a href="{% url 'productos_crear' %}">Crear</a>
+</button>
+{% endblock %}

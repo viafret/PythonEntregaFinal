@@ -16,6 +16,8 @@ class Integrantes(models.Model):
     edad = models.IntegerField()
     profesion = models.CharField(max_length=20)
 
+    def __str__(self):
+        return f"Nombre: {self.nombre} - Apellido: {self.apellido} - Edad: {self.edad} - Profesión: {self.profesion}"
 class Contacto(models.Model):
 
     nombre = models.CharField (max_length=20)
@@ -28,3 +30,6 @@ class Producto(models.Model):
     nombre = models.CharField (max_length=40)
     precio = models.IntegerField()
     stock = models.BooleanField()
+
+    def __str__(self):
+        return f"Nombre: {self.nombre} - Precio: {self.precio} - Stock: {self.stock}"

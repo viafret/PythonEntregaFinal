@@ -1,0 +1,21 @@
+{% extends "App1/padre.html" %}
+
+{% load static %}
+
+{% block cambioTitulo %}
+
+<span class="subheading">Editar Integrantes</span>
+
+{% endblock %}
+
+{% block seCambia %}
+
+<form action="{% url 'EditarInt' apellido %}" method="POST">{% csrf_token %}
+    <table>
+        {{miFormulario.as_table}}
+
+    </table>
+    <input type="submit" value="Enviar">
+</form>    
+
+{% endblock %}

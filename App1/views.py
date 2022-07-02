@@ -7,6 +7,10 @@ from django.shortcuts import render
 from django.template import Template, Context, loader
 from App1.models import Integrantes, Producto, Contacto
 from App1.forms import IntegrantesForm, ProductoForm, ContactoForm
+from django.views.generic import ListView
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
 
 # Create your views here.
 
@@ -108,4 +112,73 @@ def encontrarInt(request):
 
     return HttpResponse(respuesta)
 
+def leerIntegrantes(request):
+        
+    integrantes = Integrantes.objects.all()
+
+    contexto = {"Integrantes":integrantes}
+
+    return render(request, "App1/leerIntegrantes.html", contexto)
+
+def borrarIntegrante(request, apellido):
+
+    integrante = Integrantes.objects.get(apellido=apellido)
+    integrante.delete()
+
+    integrantes = Integrantes.objects.all()
+
+    contexto = {"Integrantes": integrantes}
+
+    return render(request, "App1/leerIntegrantes.html", contexto)
+
+def editarIntegrante(request, apellido):
+
+    integrante = Integrantes.objects.get(apellido=apellido)
+
+    if request.method == 'POST':
+
+        miFormulario = IntegrantesForm(request.POST)
+
+        print (miFormulario)
+
+        if miFormulario.is_valid:
+
+            informacion = miFormulario.cleaned_data
+
+            integrante.nombre = informacion['nombre']
+            integrante.apellido = informacion['apellido']
+            integrante.edad = informacion['edad']
+            integrante.profesion = informacion['profesion']
+            integrante.save()
+
+            return render(request, "App1/inicio.html")
     
+    else:
+
+        miFormulario = IntegrantesForm(initial={'nombre': integrante.nombre, 'apellido':integrante.apellido, 'edad':integrante.edad, 'profesion': integrante.profesion})
+
+    
+    return render(request, "App1/editarIntegrantes.html", {"miFormulario":miFormulario, "apellido":apellido})
+
+class ProductoList(ListView):
+    model = Producto
+    template_name = "App1/productos_lista.html"
+
+class ProductoDetalle(DetailView):
+    model = Producto
+    template_name = "App1/productos_detalle.html"
+
+class ProductoCrear(CreateView):
+    model = Producto
+    success_url = reverse_lazy('productos_lista')
+    fields = ['nombre', 'precio', 'stock']
+
+class ProductoEditar(UpdateView):
+    model = Producto
+    success_url = reverse_lazy('productos_lista')
+    fields = ['nombre', 'precio', 'stock']
+
+class ProductoEliminar(DeleteView):
+    model = Producto
+    success_url = reverse_lazy('productos_lista')
+    fields = ['nombre', 'precio', 'stock']
