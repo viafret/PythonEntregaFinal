@@ -6,13 +6,17 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import Template, Context, loader
 from App1.models import Integrantes, Producto, Contacto
-from App1.forms import IntegrantesForm, ProductoForm, ContactoForm
+from App1.forms import IntegrantesForm, ProductoForm, ContactoForm, UserRegisterForm
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-# Create your views here.
+
+# Vistas por funciones
 
 def inicio(request):
 
@@ -160,7 +164,8 @@ def editarIntegrante(request, apellido):
     
     return render(request, "App1/editarIntegrantes.html", {"miFormulario":miFormulario, "apellido":apellido})
 
-class ProductoList(ListView):
+#Vistas por clases
+class ProductoList(LoginRequiredMixin, ListView):
     model = Producto
     template_name = "App1/productos_lista.html"
 
@@ -182,3 +187,56 @@ class ProductoEliminar(DeleteView):
     model = Producto
     success_url = reverse_lazy('productos_lista')
     fields = ['nombre', 'precio', 'stock']
+
+#LOGIN
+def pedidoLog(request):
+
+    if request.method == "POST":
+        form = AuthenticationForm(request, data = request.POST)
+
+        if form.is_valid():
+            usuario = form.cleaned_data.get('username')
+            contra = form.cleaned_data.get('password')
+
+            user = authenticate(username=usuario, password=contra)
+
+            if user is not None:
+                login(request, user)
+
+                return render (request, 'App1/inicio.html', {"mensaje":f"Bienvenido {usuario}"})
+
+            else:
+
+                return render (request, 'App1/inicio.html', {"mensaje":"Error, verifique los datos ingresados"})
+
+        else:
+
+            return render (request, 'App1/inicio.html', {"mensaje":"Error, formulario erroneo"})
+
+    form = AuthenticationForm()
+
+    return render (request, 'App1/login.html', {"form":form})
+
+#REGISTRO
+def registro(request):
+
+    if request.method == 'POST':
+
+        #form = UserCreationForm(request.POST)
+        form = UserRegisterForm(request.POST)
+
+        if form.is_valid():
+
+            username = form.cleaned_data ['username']
+            form.save()
+            return render(request, 'App1/inicio.html', {"mensaje":"Usuario Creado"})
+
+    else:
+        #form = UserCreationForm()
+        form = UserRegisterForm()
+
+    return render(request, 'App1/registro.html', {"form":form})
+
+
+
+

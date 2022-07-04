@@ -1,0 +1,19 @@
+{% extends "App1/padre.html" %}
+
+{% load static %}
+
+{% block cambioTitulo %}
+
+<span class="subheading">Ingreso Usuario Registrados</span>
+
+{% endblock %}
+
+{% block seCambia %}
+
+<form method="POST">
+    
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit"> Iniciar sesión </button>
+</form>
+{% endblock %}
