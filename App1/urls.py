@@ -8,10 +8,8 @@ urlpatterns = [
     
     path('', views.inicio, name="Inicio"),
     path('integrantes/', views.integrantes, name="Integrantes"),
-    #path('actividades/', views.actividades, name="Actividades"),
     path('producto/', views.producto, name="Producto"),
     path('contacto/', views.contacto, name="Contacto"),
-    #path('integrantesForm/', views.integrantesForm, name="integrantesForm"),
     path('buscarIntegrante/', views.buscarIntegrante, name="buscarIntegrante"),
     path('buscar/', views.encontrarInt),
     path('leerIntegrantes/', views.leerIntegrantes, name="LeerIntegrantes"),
@@ -31,4 +29,6 @@ urlpatterns = [
     path('logout', LogoutView.as_view(template_name='App1/logout.html'), name='Logout'),
     #EDICION USUARIO
     path('editarPerfil', views.editarPerfil, name = "EditarPerfil"),
+    #ACERCA DE
+    path('acercaDe', views.acercaDe, name = "AcercaDe"),
     ]   

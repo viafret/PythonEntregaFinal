@@ -23,6 +23,10 @@ def inicio(request):
 
     return render(request, 'App1/inicio.html') 
 
+def acercaDe(request):
+
+    return render(request, 'App1/acerca_de.html')
+
 @login_required
 def integrantes(request):
     if request.method == 'POST':
@@ -138,6 +142,7 @@ def borrarIntegrante(request, apellido):
 
     return render(request, "App1/leerIntegrantes.html", contexto)
 
+@login_required
 def editarIntegrante(request, apellido):
 
     integrante = Integrantes.objects.get(apellido=apellido)

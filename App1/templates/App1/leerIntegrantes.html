@@ -15,11 +15,16 @@
         <li>{{p}}</li>
         <button>
             <a href="{% url 'EliminarInt' p.apellido %}">Eliminar</a>
+        </button>
+        <button>
             <a href="{% url 'EditarInt' p.apellido %}">Editar</a>
         </button>
+        
 
     {% endfor %}
-
-
-    <a href="{% url 'Integrantes' %}">Agregar</a>
+    <br><br>
+    <button>
+        <a href="{% url 'Integrantes' %}">Agregar</a>
+    </button>
+    
 {% endblock %}
