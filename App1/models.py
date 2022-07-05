@@ -1,13 +1,9 @@
+from pickletools import read_unicodestring1
 from pyexpat import model
 from statistics import mode
 from django.db import models
+from django.contrib.auth.models import User
 
-# Create your models here.
-#class Familia(models.Model):
-
- #   nombre = models.CharField(max_length=40)
-  #  edad = models.IntegerField()
-  #  fechaNac = models.DateField()
 
 class Integrantes(models.Model):
 
@@ -33,3 +29,9 @@ class Producto(models.Model):
 
     def __str__(self):
         return f"Nombre: {self.nombre} - Precio: {self.precio} - Stock: {self.stock}"
+
+class Avatar(models.Model):
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    imagen = models.ImageField(upload_to='avatares', null=True, blank = True)
